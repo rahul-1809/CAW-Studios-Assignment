@@ -1,7 +1,13 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
-API_KEY = "AIzaSyCiXwJ18QJn55kUPs266mZeeP8r8KDOwxY"
+load_dotenv()
+
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set. Please set it in your environment or in a .env file.")
 MODEL_NAME = "gemini-2.0-flash"
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent?key={API_KEY}"
 

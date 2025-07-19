@@ -17,6 +17,9 @@ ratings_cleaned.csv
 # - book_ratings_cleaned.csv
 # - book_stats.csv
 
+# Environment variables
+.env
+
 # Python
 __pycache__/
 *.py[cod]
@@ -68,7 +71,6 @@ Thumbs.db
 logs/
 
 # API keys and secrets
-.env
 *.key
 secrets.json
 

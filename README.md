@@ -55,7 +55,6 @@ A comprehensive recommendation system that combines **movies** (MovieLens 20M da
 ### **AI Integration**
 - **Google Gemini API** for natural language processing
 - **Structured prompts** for consistent, readable explanations
-- **Rate limiting handling** and error management
 
 ## 📁 Project Structure
 
@@ -125,7 +124,11 @@ python book_data_preparation.py
 
 ### **3. Gemini API Setup**
 1. Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Update the API key in `gemini_client.py`
+2. Create a `.env` file in the project root with:
+   ```
+   GEMINI_API_KEY=your_actual_api_key_here
+   ```
+   Or set the environment variable in your shell.
 
 ### **4. Launch the Application**
 ```bash
@@ -173,7 +176,6 @@ Open your browser to: [http://localhost:5000](http://localhost:5000)
 ### **Performance Optimizations**
 - **Sparse matrices** for large rating datasets
 - **Efficient data structures** for fast similarity calculations
-- **Caching** of processed data to avoid recomputation
 - **Memory management** for handling large datasets
 
 ## 🎨 UI Features
