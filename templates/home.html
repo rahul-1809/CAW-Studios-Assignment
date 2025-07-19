@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommender - Home</title>
+    <style>
+        body { background: #f5f7fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px 28px; text-align: center; }
+        h1 { color: #2d3748; margin-bottom: 24px; }
+        label { font-size: 1.1em; color: #4a5568; }
+        input[type=number] { width: 80%; padding: 8px; margin: 12px 0 20px 0; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 1em; }
+        .btn { background: #3182ce; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 1.1em; cursor: pointer; margin: 8px 0; transition: background 0.2s; }
+        .btn:hover { background: #225ea8; }
+        .link { display: block; margin: 18px 0 0 0; color: #3182ce; text-decoration: none; font-size: 1em; }
+        .link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie Recommender</h1>
+        <form method="post">
+            <label for="user_id">Enter your User ID:</label><br>
+            <input type="number" id="user_id" name="user_id" required><br>
+            <button class="btn" type="submit">Get Recommendations</button>
+        </form>
+        <a class="btn" href="/add_user" style="display:inline-block; width:90%; margin-top:10px;">Create New User</a>
+        <a class="link" href="/nl_query">Try Natural Language Movie Query</a>
+    </div>
+</body>
+</html> 

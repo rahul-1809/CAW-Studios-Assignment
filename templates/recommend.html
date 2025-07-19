@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie & Book Recommendations</title>
+    <style>
+        body { background: #f5f7fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .container { max-width: 1100px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px 28px; }
+        h1 { color: #2d3748; margin-bottom: 18px; text-align: center; }
+        .alert { background: #fed7d7; color: #c53030; border-radius: 6px; padding: 12px; margin-bottom: 18px; text-align: center; }
+        .cold-start { background: #ebf8ff; color: #2b6cb0; border-radius: 6px; padding: 12px; margin-bottom: 18px; text-align: center; font-weight: bold; }
+        .pair-card { display: flex; align-items: flex-start; background: #f7fafc; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 28px; padding: 18px 22px; }
+        .movie-info, .book-info { flex: 1; min-width: 0; }
+        .book-info { text-align: center; }
+        .book-cover { height: 110px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 8px; }
+        .explanation { flex: 2; color: #2d3748; background: #e6fffa; border-radius: 8px; padding: 14px 18px; margin: 0 18px; font-size: 1.08em; border-left: 4px solid #38a169; }
+        .explanation-title { font-weight: bold; color: #225ea8; margin-bottom: 8px; }
+        .explanation-content { line-height: 1.5; }
+        .explanation-content ul { margin: 8px 0; padding-left: 20px; }
+        .explanation-content li { margin: 4px 0; }
+        .rate-form { margin-top: 10px; }
+        .rate-form label { font-size: 1em; color: #4a5568; margin-right: 6px; }
+        .rate-form input[type=number], .rate-form input[type=text] { width: 60px; padding: 5px; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 1em; margin-right: 8px; }
+        .btn { background: #3182ce; color: #fff; border: none; border-radius: 6px; padding: 7px 18px; font-size: 1em; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: #225ea8; }
+        .nav { text-align: center; margin-top: 18px; }
+        .nav a { color: #3182ce; text-decoration: none; margin: 0 18px; font-size: 1.05em; }
+        .nav a:hover { text-decoration: underline; }
+        .section-title { margin-top: 0; margin-bottom: 10px; color: #225ea8; font-size: 1.15em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie & Book Recommendations</h1>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert">
+            {% for message in messages %}
+              <div>{{ message }}</div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% if cold_start_message %}
+            <div class="cold-start">{{ cold_start_message }}</div>
+        {% endif %}
+        {% for pair in movie_book_pairs %}
+        <div class="pair-card">
+            <div class="movie-info">
+                <div class="section-title">Movie</div>
+                <div><b>{{ pair.movie.title }}</b></div>
+                <div style="color:#4a5568;">Genres: {{ pair.movie.genres }}</div>
+                {% if pair.movie.similarity is defined %}
+                    <div style="color:#718096; font-size:0.98em;">Similarity: {{ '%.3f'|format(pair.movie.similarity) }}</div>
+                {% elif pair.movie.avg_rating is defined %}
+                    <div style="color:#718096; font-size:0.98em;">Avg Rating: {{ '%.2f'|format(pair.movie.avg_rating) }}</div>
+                {% endif %}
+                <form class="rate-form" method="post" style="margin-top:8px;">
+                    <input type="hidden" name="rate_type" value="movie">
+                    <input type="hidden" name="movie_id" value="{{ pair.movie.movieId }}">
+                    <label for="movie_rating_{{ pair.movie.movieId }}">Rate Movie (1-5):</label>
+                    <input type="text" id="movie_rating_{{ pair.movie.movieId }}" name="rating" required pattern="^[1-5](\.\d+)?$" title="Enter a number between 1 and 5">
+                    <button class="btn" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="explanation">
+                <div class="explanation-title">Why this pair?</div>
+                <div class="explanation-content">
+                    {% if pair.explanation.startswith('**Why this pair?**') %}
+                        {% set content = pair.explanation.replace('**Why this pair?**', '') %}
+                        {% if '- ' in content %}
+                            <ul>
+                            {% for line in content.split('\n') %}
+                                {% if line.strip().startswith('- ') %}
+                                    <li>{{ line.strip()[2:] }}</li>
+                                {% elif line.strip() %}
+                                    <p>{{ line.strip() }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>{{ content.strip() }}</p>
+                        {% endif %}
+                    {% else %}
+                        <p>{{ pair.explanation }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="book-info">
+                <div class="section-title">Books</div>
+                {% for book in pair.books %}
+                    <div style="margin-bottom:18px;">
+                        {% if book['Image-URL-M'] %}
+                            <img class="book-cover" src="{{ book['Image-URL-M'] }}" alt="Book cover">
+                        {% endif %}
+                        <div><b>{{ book['Book-Title'] }}</b></div>
+                        <div style="color:#4a5568;">by {{ book['Book-Author'] }}</div>
+                        {% if book.avg_rating is defined %}
+                            <div style="color:#718096; font-size:0.98em;">Avg Rating: {{ '%.2f'|format(book.avg_rating) }}</div>
+                        {% endif %}
+                        <form class="rate-form" method="post" style="margin-top:8px;">
+                            <input type="hidden" name="rate_type" value="book">
+                            <input type="hidden" name="isbn" value="{{ book['ISBN'] }}">
+                            <label for="book_rating_{{ book['ISBN'] }}">Rate Book (1-5):</label>
+                            <input type="text" id="book_rating_{{ book['ISBN'] }}" name="rating" required pattern="^[1-5](\.\d+)?$" title="Enter a number between 1 and 5">
+                            <button class="btn" type="submit">Submit</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="nav">
+            <a href="/">Back to Home</a> | <a href="/nl_query">Natural Language Query</a>
+        </div>
+    </div>
+</body>
+</html> 

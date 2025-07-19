@@ -1,0 +1,92 @@
+# Data files (large datasets)
+data/
+# Large CSV files that are downloaded from Google Drive
+rating.csv
+ratings_cleaned.csv
+# Other data files
+*.zip
+*.tar.gz
+
+# Note: The following smaller CSV files should be included in the repository:
+# - movie.csv
+# - BX-Books.csv
+# - BX-Book-Ratings.csv
+# - BX-Users.csv
+# - movies_cleaned.csv
+# - books_cleaned.csv
+# - book_ratings_cleaned.csv
+# - book_stats.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# API keys and secrets
+.env
+*.key
+secrets.json
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json 
